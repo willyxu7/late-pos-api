@@ -1,8 +1,8 @@
 CREATE TABLE operators (
     id varchar(36) not null,
-    name varchar(255),
-    email varchar(255),
-    password varchar(255),
+    name varchar(255) not null,
+    email varchar(255) not null,
+    password varchar(255) not null,
     pin int,
     created_at timestamp,
     created_by varchar(255),
@@ -14,7 +14,7 @@ CREATE TABLE operators (
 
 CREATE TABLE customers (
     id varchar(36) not null,
-    name varchar(255),
+    name varchar(255) not null,
     created_at timestamp,
     created_by varchar(255),
     updated_at timestamp,
@@ -74,7 +74,7 @@ CREATE TABLE shifts (
     ending_time time null,
     beginning_date date not null,
     ending_date date null,
-    status varchar(255),
+    status shift_status,
     created_at timestamp,
     created_by varchar(255),
     updated_at timestamp,
