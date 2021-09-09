@@ -8,6 +8,8 @@ CREATE TABLE operators (
     created_by varchar(255),
     updated_at timestamp,
     updated_by varchar(255),
+    deleted_at timestamp,
+    deleted_by varchar(255),
 
     primary key (id)
 );
@@ -19,6 +21,8 @@ CREATE TABLE customers (
     created_by varchar(255),
     updated_at timestamp,
     updated_by varchar(255),
+    deleted_at timestamp,
+    deleted_by varchar(255),
 
     primary key (id)
 );
@@ -31,6 +35,8 @@ CREATE TABLE categories (
     created_by varchar(255),
     updated_at timestamp,
     updated_by varchar(255),
+    deleted_at timestamp,
+    deleted_by varchar(255),
 
     primary key (id)
 );
@@ -44,6 +50,8 @@ CREATE TABLE products (
     created_by varchar(255),
     updated_at timestamp,
     updated_by varchar(255),
+    deleted_at timestamp,
+    deleted_by varchar(255),
 
     primary key (id)
 );
@@ -145,6 +153,8 @@ CREATE TABLE sale_orders (
     created_by varchar(255),
     updated_at timestamp,
     updated_by varchar(255),
+    deleted_at timestamp,
+    deleted_by varchar(255),
 
     primary key (id)
 );
@@ -160,6 +170,8 @@ CREATE TABLE sale_order_details (
     created_by varchar(255),
     updated_at timestamp,
     updated_by varchar(255),
+    deleted_at timestamp,
+    deleted_by varchar(255),
 
     primary key (id)
 );
