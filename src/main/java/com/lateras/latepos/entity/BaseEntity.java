@@ -39,5 +39,4 @@ public class BaseEntity {
     @LastModifiedBy
     @Column(name = "updated_by")
     private String updatedBy;
-
 }
