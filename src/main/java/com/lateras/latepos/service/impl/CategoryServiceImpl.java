@@ -1,5 +1,6 @@
 package com.lateras.latepos.service.impl;
 
+import com.lateras.latepos.exception.CategoryNotFoundException;
 import com.lateras.latepos.model.request.CreateCategoryRequest;
 import com.lateras.latepos.entity.Category;
 import com.lateras.latepos.model.request.UpdateCategoryRequest;
@@ -7,6 +8,7 @@ import com.lateras.latepos.model.response.CategoryResponse;
 import com.lateras.latepos.modelmapper.CategoryMapper;
 import com.lateras.latepos.respository.CategoryRepository;
 import com.lateras.latepos.service.CategoryService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,17 +45,17 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categoryOptional
             .map(category -> categoryMapper.mapCategoryToCategoryResponse(category))
-            .orElseThrow(() -> {
-                throw new RuntimeException();
-            });
+            .orElseThrow(() -> new CategoryNotFoundException("category not found"));
     }
 
     @Override
-    public void createCategory(CreateCategoryRequest categoryRequest) {
+    public CategoryResponse createCategory(CreateCategoryRequest categoryRequest) {
         Category category = new Category();
         category.setName(categoryRequest.getName());
         category.setDescription(categoryRequest.getDescription());
         categoryRepository.save(category);
+
+        return categoryMapper.mapCategoryToCategoryResponse(category);
     }
 
     @Override

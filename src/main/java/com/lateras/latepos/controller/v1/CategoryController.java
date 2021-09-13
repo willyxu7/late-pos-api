@@ -1,43 +1,39 @@
-package com.lateras.latepos.controller;
+package com.lateras.latepos.controller.v1;
 
 import com.lateras.latepos.model.request.CreateCategoryRequest;
-import com.lateras.latepos.entity.Category;
 import com.lateras.latepos.model.request.UpdateCategoryRequest;
 import com.lateras.latepos.model.response.CategoryResponse;
 import com.lateras.latepos.service.CategoryService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/categories")
-public class CategoryController {
+@AllArgsConstructor
+@RequestMapping("/api/v1/categories")
+public class CategoryController extends BaseController{
 
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @GetMapping
     public ResponseEntity<List<CategoryResponse>> getCategories(Pageable pageable) {
-        List<CategoryResponse> categories =  categoryService.getCategories(pageable);
-        return new ResponseEntity<List<CategoryResponse>>(categories, HttpStatus.OK);
+        return response("success get categories", categoryService.getCategories(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable(value = "id") String id) {
-        CategoryResponse category = categoryService.getCategoryById(id);
-        return new ResponseEntity<CategoryResponse>(category, HttpStatus.OK);
+        return response("success get category", categoryService.getCategoryById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Void> createCategory(@RequestBody CreateCategoryRequest categoryRequest) throws URISyntaxException {
-        categoryService.createCategory(categoryRequest);
-        return ResponseEntity.created(new URI("/v1/categories")).build();
+    public ResponseEntity<CategoryResponse> createCategory(@Valid @RequestBody CreateCategoryRequest categoryRequest) {
+        return response("success create category", categoryService.createCategory(categoryRequest), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

@@ -13,7 +13,7 @@ public interface CategoryService {
 
     CategoryResponse getCategoryById(String id);
 
-    void createCategory(CreateCategoryRequest categoryRequest);
+    CategoryResponse createCategory(CreateCategoryRequest categoryRequest);
 
     CategoryResponse updateCategory(String id, UpdateCategoryRequest updateCategoryRequest);
 
