@@ -1,6 +1,6 @@
 package com.lateras.latepos.exception.advice;
 
-import com.lateras.latepos.exception.CategoryNotFoundException;
+import com.lateras.latepos.model.response.NotFoundResponse;
 import com.lateras.latepos.model.response.NotValidDetailResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -37,23 +37,11 @@ public class ApiExceptionAdvice extends BaseExceptionAdvice{
         );
     }
 
-    @ExceptionHandler(value = {CategoryNotFoundException.class})
-    public Object notFoundException(CategoryNotFoundException categoryNotFoundException) {
-        NotFoundException notFoundException = new NotFoundException();
-        notFoundException.setMessage(categoryNotFoundException.getMessage());
+    @ExceptionHandler(value = {IllegalArgumentException.class})
+    public Object notFoundException(IllegalArgumentException illegalArgumentException) {
+        NotFoundResponse notFoundResponse = new NotFoundResponse();
+        notFoundResponse.setMessage(illegalArgumentException.getMessage());
 
-        return new ResponseEntity<>(notFoundException, HttpStatus.NOT_FOUND);
-    }
-}
-
-class NotFoundException{
-    private String message;
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+        return new ResponseEntity<>(notFoundResponse, HttpStatus.NOT_FOUND);
     }
 }

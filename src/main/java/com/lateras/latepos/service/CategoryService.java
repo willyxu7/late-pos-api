@@ -1,5 +1,6 @@
 package com.lateras.latepos.service;
 
+import com.lateras.latepos.exception.CategoryNotFoundException;
 import com.lateras.latepos.model.request.CreateCategoryRequest;
 import com.lateras.latepos.entity.Category;
 import com.lateras.latepos.model.request.UpdateCategoryRequest;
@@ -11,7 +12,7 @@ import java.util.List;
 public interface CategoryService {
     List<CategoryResponse> getCategories(Pageable pageable);
 
-    CategoryResponse getCategoryById(String id);
+    CategoryResponse getCategoryById(String id) throws CategoryNotFoundException;
 
     CategoryResponse createCategory(CreateCategoryRequest categoryRequest);
 

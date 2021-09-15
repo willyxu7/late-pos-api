@@ -5,7 +5,6 @@ import com.lateras.latepos.model.request.UpdateCategoryRequest;
 import com.lateras.latepos.model.response.CategoryResponse;
 import com.lateras.latepos.service.CategoryService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +38,7 @@ public class CategoryController extends BaseController{
     @PutMapping("/{id}")
     public ResponseEntity<CategoryResponse> updateCategory(
             @PathVariable(value = "id") String id,
-            @RequestBody UpdateCategoryRequest updateCategoryRequest)
+            @Valid @RequestBody UpdateCategoryRequest updateCategoryRequest)
     {
         CategoryResponse category = categoryService.updateCategory(id, updateCategoryRequest);
         return new ResponseEntity<CategoryResponse>(category, HttpStatus.OK);

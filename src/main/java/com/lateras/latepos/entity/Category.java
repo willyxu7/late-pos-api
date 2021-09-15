@@ -17,9 +17,11 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "UPDATE categories SET deleted_at = now()::timestamp WHERE id=?")
 @Where(clause = "deleted_at IS NULL")
 public class Category extends BaseEntity{
-    @NotNull @NotEmpty
+
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "description")
     private String description;
 
     @Column(name = "deleted_at")

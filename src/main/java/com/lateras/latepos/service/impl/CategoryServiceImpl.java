@@ -8,8 +8,7 @@ import com.lateras.latepos.model.response.CategoryResponse;
 import com.lateras.latepos.modelmapper.CategoryMapper;
 import com.lateras.latepos.respository.CategoryRepository;
 import com.lateras.latepos.service.CategoryService;
-import javassist.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,12 +20,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
-    @Autowired
-    private CategoryRepository categoryRepository;
 
-    @Autowired
-    private CategoryMapper categoryMapper;
+    private final CategoryRepository categoryRepository;
+
+    private final CategoryMapper categoryMapper;
 
     @Override
     public List<CategoryResponse> getCategories(Pageable pageable) {
@@ -35,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categories
             .stream()
-            .map(category -> categoryMapper.mapCategoryToCategoryResponse(category))
+            .map(categoryMapper::mapCategoryToCategoryResponse)
             .collect(Collectors.toList());
     }
 
@@ -44,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> categoryOptional = categoryRepository.findById(id);
 
         return categoryOptional
-            .map(category -> categoryMapper.mapCategoryToCategoryResponse(category))
+            .map(categoryMapper::mapCategoryToCategoryResponse)
             .orElseThrow(() -> new CategoryNotFoundException("category not found"));
     }
 
@@ -65,16 +64,19 @@ public class CategoryServiceImpl implements CategoryService {
             .map(category -> {
                 category.setName(updateCategoryRequest.getName());
                 category.setDescription(updateCategoryRequest.getDescription());
+                categoryRepository.save(category);
                 return category;
             })
-            .map(category -> categoryMapper.mapCategoryToCategoryResponse(category))
-            .orElseThrow(() -> {
-                throw new RuntimeException();
-            });
+            .map(categoryMapper::mapCategoryToCategoryResponse)
+            .orElseThrow(() -> new CategoryNotFoundException("category not found"));
     }
 
     @Override
     public void deleteCategory(String id) {
+        if(! categoryRepository.existsById(id)) {
+            throw new CategoryNotFoundException("category not found");
+        }
+
         categoryRepository.deleteById(id);
     }
 
