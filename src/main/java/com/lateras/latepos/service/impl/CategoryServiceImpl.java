@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponse getCategoryById(String id) {
+    public CategoryResponse getCategoryResponseById(String id) {
         Optional<Category> categoryOptional = categoryRepository.findById(id);
 
         return categoryOptional
@@ -79,5 +79,17 @@ public class CategoryServiceImpl implements CategoryService {
 
         categoryRepository.deleteById(id);
     }
+
+    @Override
+    public Category getCategoryById(String id) {
+        return categoryRepository.findById(id)
+            .orElseThrow(() -> new CategoryNotFoundException("category not found"));
+    }
+
+    @Override
+    public Category getCategoryByName(String name) {
+        return categoryRepository.findByName(name);
+    }
+
 
 }

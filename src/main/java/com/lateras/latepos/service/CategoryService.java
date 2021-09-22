@@ -12,11 +12,15 @@ import java.util.List;
 public interface CategoryService {
     List<CategoryResponse> getCategories(Pageable pageable);
 
-    CategoryResponse getCategoryById(String id) throws CategoryNotFoundException;
+    CategoryResponse getCategoryResponseById(String id) throws CategoryNotFoundException;
 
     CategoryResponse createCategory(CreateCategoryRequest categoryRequest);
 
     CategoryResponse updateCategory(String id, UpdateCategoryRequest updateCategoryRequest);
 
     void deleteCategory(String id);
+
+    Category getCategoryById(String id);
+
+    Category getCategoryByName(String name);
 }

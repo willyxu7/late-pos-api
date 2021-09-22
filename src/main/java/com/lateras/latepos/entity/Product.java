@@ -16,12 +16,13 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "UPDATE products SET deleted_at = now()::timestamp WHERE id=?")
 @Where(clause = "deleted_at IS NULL")
 public class Product extends BaseEntity{
-    @NotNull @NotEmpty @Size(max = 255)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull @NotEmpty @ManyToOne @JoinColumn(name = "category_id")
+    @ManyToOne @JoinColumn(name = "category_id")
     private Category category;
 
+    @Column(name = "description")
     private String description;
 
     @Column(name = "deleted_at")

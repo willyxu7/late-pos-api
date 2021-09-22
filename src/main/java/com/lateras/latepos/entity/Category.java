@@ -1,6 +1,9 @@
 package com.lateras.latepos.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -26,4 +29,5 @@ public class Category extends BaseEntity{
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt = null;
+
 }

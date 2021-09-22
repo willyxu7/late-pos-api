@@ -27,7 +27,7 @@ public class CategoryController extends BaseController{
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable(value = "id") String id) {
-        return response("success get category", categoryService.getCategoryById(id), HttpStatus.OK);
+        return response("success get category", categoryService.getCategoryResponseById(id), HttpStatus.OK);
     }
 
     @PostMapping

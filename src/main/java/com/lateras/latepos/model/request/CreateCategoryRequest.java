@@ -1,13 +1,15 @@
 package com.lateras.latepos.model.request;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class CreateCategoryRequest {
     @NotNull(message = "Name must not be null")
     @NotEmpty(message = "Name must not be empty")
