@@ -9,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,6 +22,9 @@ public class Product extends BaseEntity{
 
     @ManyToOne @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(targetEntity = Variant.class, mappedBy = "product")
+    private List<Variant> variants;
 
     @Column(name = "description")
     private String description;

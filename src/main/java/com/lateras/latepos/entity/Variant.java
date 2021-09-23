@@ -1,11 +1,9 @@
 package com.lateras.latepos.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -15,16 +13,18 @@ import java.math.BigDecimal;
 @Data
 @Table(name = "variants")
 public class Variant extends BaseEntity{
-    @NotNull @NotEmpty
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull @NotEmpty @ManyToOne @JoinColumn(name = "product_id")
+    @ManyToOne @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @NotNull @NotEmpty @Min(0)
+    @Column(name = "price", nullable = false)
     private BigDecimal price;
 
+    @Column(name = "sku")
     private String sku;
 
+    @Column(name = "description")
     private String description;
 }

@@ -4,12 +4,14 @@ import com.lateras.latepos.entity.Category;
 import com.lateras.latepos.entity.Product;
 import com.lateras.latepos.exception.ProductNotFoundException;
 import com.lateras.latepos.model.request.CreateProductRequest;
+import com.lateras.latepos.model.request.CreateVariantRequest;
 import com.lateras.latepos.model.request.UpdateProductRequest;
 import com.lateras.latepos.model.response.ProductResponse;
 import com.lateras.latepos.modelmapper.ProductMapper;
 import com.lateras.latepos.respository.ProductRepository;
 import com.lateras.latepos.service.CategoryService;
 import com.lateras.latepos.service.ProductService;
+import com.lateras.latepos.service.VariantService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
+    private final VariantService variantService;
 
     private final ProductMapper productMapper;
 
@@ -58,7 +61,11 @@ public class ProductServiceImpl implements ProductService {
         product.setName(createProductRequest.getName());
         product.setCategory(category);
         product.setDescription(createProductRequest.getDescription());
-        productRepository.save(product);
+        product = productRepository.save(product);
+
+        for (CreateVariantRequest variantRequest : createProductRequest.getCreateVariantRequests()) {
+            variantService.createVariant(variantRequest, product);
+        }
 
         return productMapper.mapProductToProductResponse(product);
     }
@@ -89,7 +96,6 @@ public class ProductServiceImpl implements ProductService {
 
         return null;
     }
-
 
     @Override
     public Product getProductById(String id) {

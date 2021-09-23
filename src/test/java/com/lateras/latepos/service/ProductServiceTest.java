@@ -4,8 +4,10 @@ import com.lateras.latepos.entity.Category;
 import com.lateras.latepos.entity.Product;
 import com.lateras.latepos.model.request.CreateCategoryRequest;
 import com.lateras.latepos.model.request.CreateProductRequest;
+import com.lateras.latepos.model.request.CreateVariantRequest;
 import com.lateras.latepos.model.response.CategoryResponse;
 import com.lateras.latepos.model.response.ProductResponse;
+import com.lateras.latepos.model.response.VariantResponse;
 import com.lateras.latepos.respository.CategoryRepository;
 import com.lateras.latepos.respository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
@@ -21,6 +23,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,8 +34,11 @@ import java.util.Optional;
 })
 public class ProductServiceTest {
 
-    @Mock
+    @Autowired
     private ProductService productService;
+
+    @Autowired
+    private VariantService variantService;
 
     @BeforeEach
     void setUp() {
@@ -49,25 +56,27 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testSuccessCreateProduct() {
+    public void testCreateProductAndVariants() {
+        CreateVariantRequest createVariantRequest = new CreateVariantRequest("Kopi Susu Es", BigDecimal.valueOf(10000), "", "");
+        CreateVariantRequest createVariantRequest2 = new CreateVariantRequest("Kopi Susu Panas", BigDecimal.valueOf(8000), "", "");
 
-        Category category = new Category();
-        category.setId("55b20695-b9ae-4c37-a4d5-56e9f8e3d110");
-        category.setName("Kopi");
+        List<CreateVariantRequest> createVariantRequests = new ArrayList<>();
+        createVariantRequests.add(createVariantRequest);
+        createVariantRequests.add(createVariantRequest2);
 
         CreateProductRequest createProductRequest = new CreateProductRequest(
-            "Kopi Susu Es",
-            "55b20695-b9ae-4c37-a4d5-56e9f8e3d110",
-            "Test Insert Product Kopi Susu Es"
+            "Kopi Susu",
+            "c63a122b-36bd-4c38-b125-ff411cc407d4",
+            "",
+            createVariantRequests
         );
-
-        Mockito.when(productService.createProduct(createProductRequest))
-                .thenReturn(new ProductResponse("123","Kopi Susu Es", category.getName(), "test"));
 
         ProductResponse productResponse = productService.createProduct(createProductRequest);
 
-        System.out.println(productResponse);
-        Assertions.assertNotNull(productResponse);
-        Assertions.assertSame("Kopi Susu Es", productResponse.getName());
+        List<VariantResponse> variantResponses = variantService.getVariantResponsesBasedOnProduct(productResponse.getId());
+
+        System.out.println(variantResponses);
+        Assertions.assertNotNull(variantResponses);
+
     }
 }
